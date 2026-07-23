@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAAS — Sundarban Raw Forest Honey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF6EC;
+    --cream-deep:#F1EADA;
+    --ink:#26241F;
+    --ink-soft:#5B5648;
+    --forest:#1F3D2B;
+    --forest-deep:#152C1F;
+    --gold:#C98A2C;
+    --gold-deep:#9C6A1C;
+    --line:#E4DAC3;
+    --danger:#B4483A;
+    --ok:#3F7A52;
+    --radius:14px;
+    --shadow: 0 1px 2px rgba(38,36,31,0.06), 0 12px 28px -14px rgba(38,36,31,0.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Public Sans', -apple-system, sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', Georgia, serif;
+    color:var(--forest-deep);
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+  .app{max-width:1080px;margin:0 auto;padding:0 20px;}
+  ::selection{background:var(--gold);color:#fff;}
+
+  /* ---------- Trust ribbon ---------- */
+  .ribbon{
+    background:var(--forest-deep);
+    color:#EFE9D8;
+    font-size:12.5px;
+    letter-spacing:0.02em;
+  }
+  .ribbon-inner{
+    max-width:1080px;margin:0 auto;padding:8px 20px;
+    display:flex;gap:26px;flex-wrap:wrap;justify-content:center;
+  }
+  .ribbon-inner span{display:flex;align-items:center;gap:6px;opacity:0.92;}
+
+  /* ---------- Header ---------- */
+  header.site{
+    background:var(--cream);
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:40;
+  }
+  .site-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 20px;
+  }
+  .logo{
+    font-family:'Fraunces',serif;
+    font-weight:700;font-size:26px;
+    color:var(--forest-deep);
+    letter-spacing:0.01em;
+    display:flex;align-items:baseline;gap:8px;
+  }
+  .logo .dot{color:var(--gold);}
+  .logo-tag{
+    font-family:'Public Sans',sans-serif;font-size:11px;font-weight:600;
+    color:var(--ink-soft);letter-spacing:0.06em;text-transform:uppercase;
+    border-left:1px solid var(--line);padding-left:10px;margin-left:2px;
+  }
+  .whatsapp-pill{
+    display:flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);
+    padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:600;
+    text-decoration:none;color:var(--forest-deep);
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .whatsapp-pill:hover{border-color:var(--forest);transform:translateY(-1px);}
+
+  /* ---------- Product hero ---------- */
+  main{padding:44px 0 70px;}
+  .hero{
+    display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;
+  }
+  @media (max-width:860px){.hero{grid-template-columns:1fr;gap:30px;}}
+
+  .media{position:relative;}
+  .frame{
+    background:linear-gradient(180deg,#fff, var(--cream-deep));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:26px;
+    position:relative;
+    box-shadow:var(--shadow);
+  }
+  .frame img{
+    width:100%;aspect-ratio:1/1;object-fit:contain;display:block;
+    filter:drop-shadow(0 18px 20px rgba(38,36,31,0.16));
+  }
+  .seal{
+    position:absolute;top:14px;right:8px;
+    width:96px;height:96px;
+    transform:rotate(-11deg);
+    filter:drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+    pointer-events:none;
+  }
+
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--gold-deep);margin-bottom:10px;
+  }
+  .title{font-size:34px;font-weight:600;margin:0 0 10px;line-height:1.1;}
+  .rating-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;font-size:14px;color:var(--ink-soft);}
+  .stars{color:var(--gold-deep);letter-spacing:1px;}
+  .rating-num{font-weight:700;color:var(--ink);}
+
+  .price-row{display:flex;align-items:baseline;gap:12px;margin:6px 0 4px;}
+  .price-now{font-family:'Fraunces',serif;font-size:32px;font-weight:600;color:var(--forest-deep);}
+  .price-old{font-size:17px;color:var(--ink-soft);text-decoration:line-through;}
+  .price-off{
+    background:#F3E7D2;color:var(--gold-deep);font-weight:700;font-size:12.5px;
+    padding:3px 9px;border-radius:999px;
+  }
+  .price-unit{font-size:13px;color:var(--ink-soft);margin-bottom:18px;}
+
+  .highlights{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .highlights li{display:flex;gap:10px;font-size:14.5px;align-items:flex-start;}
+  .highlights li svg{flex:none;margin-top:2px;color:var(--forest);}
+
+  .desc{font-size:14.5px;color:var(--ink-soft);margin:0 0 24px;max-width:52ch;}
+
+  .qty-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+  .qty-label{font-size:13px;font-weight:700;color:var(--ink);}
+  .qty-box{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
+  .qty-box button{background:none;border:none;width:36px;height:38px;font-size:17px;color:var(--forest-deep);}
+  .qty-box button:hover{background:var(--cream-deep);}
+  .qty-box input{width:42px;text-align:center;border:none;font-size:15px;font-weight:700;background:none;}
+
+  .buy-now{
+    width:100%;padding:16px;border:none;border-radius:12px;
+    background:var(--forest-deep);color:#fff;
+    font-size:16.5px;font-weight:700;letter-spacing:0.01em;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 10px 24px -10px rgba(21,44,31,0.55);
+    transition:transform .12s ease, background .15s ease;
+  }
+  .buy-now:hover{background:var(--forest);transform:translateY(-1px);}
+  .pay-note{
+    display:flex;gap:8px;margin-top:12px;font-size:12.5px;color:var(--ink-soft);
+    background:var(--cream-deep);border:1px solid var(--line);padding:10px 12px;border-radius:10px;
+  }
+
+  /* ---------- Trust cards ---------- */
+  .trust-section{margin-top:64px;}
+  .section-title{font-size:22px;font-weight:600;margin-bottom:6px;}
+  .section-sub{font-size:14px;color:var(--ink-soft);margin:0 0 22px;}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media (max-width:860px){.trust-grid{grid-template-columns:repeat(2,1fr);}}
+  .trust-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;
+  }
+  .trust-card .ico{
+    width:38px;height:38px;border-radius:10px;background:var(--cream-deep);
+    display:flex;align-items:center;justify-content:center;color:var(--forest);margin-bottom:12px;
+  }
+  .trust-card h3{font-size:15px;margin:0 0 6px;font-family:'Public Sans',sans-serif;font-weight:700;color:var(--ink);}
+  .trust-card p{font-size:13px;color:var(--ink-soft);margin:0;}
+
+  footer.site{
+    margin-top:70px;border-top:1px solid var(--line);padding:26px 0 40px;
+    font-size:12.5px;color:var(--ink-soft);
+  }
+  .footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .admin-link{background:none;border:none;color:var(--ink-soft);text-decoration:underline;font-size:12px;}
+
+  /* ---------- Checkout ---------- */
+  .checkout-wrap{display:none;padding:36px 0 80px;}
+  .checkout-wrap.active{display:block;}
+  .hero.active{display:grid;}
+  .hero.hidden, main > .trust-section.hidden{display:none;}
+
+  .steps{display:flex;gap:0;margin-bottom:30px;max-width:520px;}
+  .step{
+    flex:1;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink-soft);
+    padding-bottom:12px;border-bottom:3px solid var(--line);position:relative;
+  }
+  .step.done{color:var(--forest);border-color:var(--forest);}
+  .step.current{color:var(--forest-deep);border-color:var(--gold);}
+  .step .num{
+    display:inline-flex;width:20px;height:20px;border-radius:50%;
+    background:var(--line);color:#fff;align-items:center;justify-content:center;
+    font-size:11px;margin-right:6px;
+  }
+  .step.done .num, .step.current .num{background:var(--forest);}
+
+  .checkout-grid{display:grid;grid-template-columns:1.2fr 0.9fr;gap:34px;align-items:start;}
+  @media (max-width:860px){.checkout-grid{grid-template-columns:1fr;}}
+
+  .panel{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--shadow);
+  }
+  .panel h2{font-size:20px;margin:0 0 6px;}
+  .panel .sub{font-size:13px;color:var(--ink-soft);margin:0 0 22px;}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+  .field label .req{color:var(--danger);}
+  .field input, .field select, .field textarea{
+    width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:14.5px;font-family:inherit;background:#fff;color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none;border-color:var(--forest);
+  }
+  .field textarea{resize:vertical;min-height:70px;}
+  .field-error{font-size:12px;color:var(--danger);margin-top:5px;display:none;}
+  .field.invalid input, .field.invalid select, .field.invalid textarea{border-color:var(--danger);}
+  .field.invalid .field-error{display:block;}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:520px){.row-2{grid-template-columns:1fr;}}
+  .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media (max-width:640px){.row-3{grid-template-columns:1fr;}}
+
+  .continue-btn{
+    width:100%;padding:15px;border:none;border-radius:11px;background:var(--forest-deep);color:#fff;
+    font-size:15px;font-weight:700;margin-top:6px;
+  }
+  .continue-btn:hover{background:var(--forest);}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-soft);background:none;border:none;margin-bottom:18px;padding:0;}
+
+  /* receipt summary */
+  .receipt{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:0;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .receipt-top{padding:22px 26px 14px;}
+  .receipt-top h3{font-size:16px;margin:0 0 14px;}
+  .receipt-item{display:flex;gap:12px;align-items:center;margin-bottom:16px;}
+  .receipt-item img{width:52px;height:52px;object-fit:contain;background:var(--cream-deep);border-radius:8px;padding:6px;border:1px solid var(--line);}
+  .receipt-item .name{font-size:14px;font-weight:700;}
+  .receipt-item .meta{font-size:12px;color:var(--ink-soft);}
+  .perforation{
+    height:0;border-top:2px dashed var(--line);margin:0 0;position:relative;
+  }
+  .perforation:before, .perforation:after{
+    content:"";position:absolute;top:-11px;width:22px;height:22px;border-radius:50%;background:var(--cream);
+  }
+  .perforation:before{left:-33px;}
+  .perforation:after{right:-33px;}
+  .receipt-lines{padding:18px 26px;font-size:14px;}
+  .rline{display:flex;justify-content:space-between;padding:5px 0;color:var(--ink-soft);}
+  .rline.total{color:var(--ink);font-weight:800;font-size:16px;border-top:1px solid var(--line);margin-top:8px;padding-top:12px;}
+  .rline .val{font-family:'IBM Plex Mono',monospace;}
+  .receipt-note{
+    background:var(--cream-deep);margin:0 26px 22px;padding:12px 14px;border-radius:10px;
+    font-size:12.5px;color:var(--ink-soft);
+  }
+  .receipt-note b{color:var(--forest-deep);}
+
+  /* payment step */
+  .pay-methods{display:flex;gap:14px;margin-bottom:22px;}
+  .pay-method{
+    flex:1;border:1.5px solid var(--line);border-radius:12px;padding:16px;text-align:center;
+    background:#fff;transition:border-color .15s ease;
+  }
+  .pay-method.selected{border-color:var(--forest);box-shadow:0 0 0 3px rgba(31,61,43,0.08);}
+  .pay-method img, .pay-method .swatch{height:26px;margin:0 auto 8px;display:block;}
+  .pay-method .swatch{font-family:'Fraunces',serif;font-weight:700;font-size:16px;}
+  .pay-method.bkash .swatch{color:#e2136e;}
+  .pay-method.nagad .swatch{color:#ec1c24;}
+  .pay-method div.label{font-size:13px;font-weight:700;}
+
+  .send-box{
+    background:var(--cream-deep);border:1px dashed var(--gold-deep);border-radius:12px;
+    padding:18px;margin-bottom:20px;display:none;
+  }
+  .send-box.show{display:block;}
+  .send-box .amt{font-size:13px;color:var(--ink-soft);margin-bottom:8px;}
+  .send-box .amt b{color:var(--forest-deep);font-size:18px;font-family:'Fraunces',serif;}
+  .num-row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:12px;}
+  .num-row .num{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;letter-spacing:0.03em;flex:1;}
+  .copy-btn{background:var(--forest-deep);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;}
+  .copy-btn.copied{background:var(--ok);}
+  .steps-list{margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft);}
+  .steps-list li{margin-bottom:5px;}
+
+  /* confirmation */
+  .confirm-wrap{max-width:560px;margin:0 auto;text-align:center;}
+  .stamp{
+    width:120px;height:120px;margin:0 auto 20px;
+  }
+  .confirm-wrap h2{font-size:26px;margin:0 0 10px;}
+  .confirm-wrap p{color:var(--ink-soft);font-size:14.5px;margin:0 0 22px;}
+  .order-id{
+    display:inline-block;background:var(--cream-deep);border:1px solid var(--line);
+    padding:8px 16px;border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:13px;margin-bottom:20px;
+  }
+  .cod-highlight{
+    background:linear-gradient(180deg,#fff,var(--cream-deep));
+    border:1.5px solid var(--gold-deep);border-radius:16px;
+    padding:20px;margin-bottom:22px;
+  }
+  .cod-label{font-size:12.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:6px;}
+  .cod-amount{font-family:'Fraunces',serif;font-size:38px;font-weight:700;color:var(--forest-deep);line-height:1.1;}
+  .cod-sub{font-size:12.5px;color:var(--ink-soft);margin-top:6px;}
+  .confirm-summary{text-align:left;margin-bottom:26px;}
+  .wa-btn{
+    display:inline-flex;align-items:center;gap:10px;background:#1F3D2B;color:#fff;
+    padding:14px 22px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14.5px;
+    box-shadow:var(--shadow);
+  }
+  .wa-btn svg{color:#4ADE80;}
+  .home-link{display:block;margin-top:20px;font-size:13px;color:var(--ink-soft);text-decoration:underline;background:none;border:none;}
+
+  /* admin modal */
+  .modal-veil{
+    position:fixed;inset:0;background:rgba(21,44,31,0.55);display:none;
+    align-items:center;justify-content:center;z-index:100;padding:20px;
+  }
+  .modal-veil.show{display:flex;}
+  .modal-box{background:#fff;border-radius:16px;padding:26px;max-width:960px;width:100%;max-height:85vh;overflow:auto;}
+  .modal-box h3{margin-top:0;}
+  .modal-close{float:right;background:none;border:none;font-size:20px;color:var(--ink-soft);}
+  table.orders{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table.orders th, table.orders td{border:1px solid var(--line);padding:7px 9px;text-align:left;white-space:nowrap;}
+  table.orders th{background:var(--cream-deep);}
+  .modal-actions{display:flex;gap:10px;margin-bottom:16px;}
+  .modal-actions button{background:var(--forest-deep);color:#fff;border:none;padding:9px 14px;border-radius:8px;font-size:12.5px;font-weight:700;}
+  .passcode-box{max-width:320px;}
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:var(--forest-deep);color:#fff;padding:11px 18px;border-radius:999px;
+    font-size:13px;z-index:200;opacity:0;transition:opacity .2s ease;pointer-events:none;
+    max-width:90vw;text-align:center;
+  }
+  .toast.show{opacity:1;}
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:600px){
+    .app{padding:0 14px;}
+    .ribbon-inner{gap:12px 16px;padding:7px 14px;font-size:11.5px;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;}
+    .ribbon-inner span{flex:none;}
+    .site-inner{padding:12px 14px;gap:10px;}
+    .logo{font-size:21px;}
+    .logo-tag{display:none;}
+    .whatsapp-pill{padding:7px 11px;font-size:12px;}
+    .whatsapp-pill svg{flex:none;}
+    main{padding:26px 0 50px;}
+    .frame{padding:16px;border-radius:16px;}
+    .seal{width:74px;height:74px;top:8px;right:4px;}
+    .eyebrow{font-size:11px;}
+    .title{font-size:25px;}
+    .rating-row{font-size:13px;flex-wrap:wrap;}
+    .price-now{font-size:26px;}
+    .price-old{font-size:15px;}
+    .price-row{flex-wrap:wrap;row-gap:6px;}
+    .highlights li{font-size:13.5px;}
+    .desc{font-size:13.5px;max-width:none;}
+    .qty-row{flex-wrap:wrap;gap:10px;}
+    .buy-now{font-size:15px;padding:14px;}
+    .pay-note{font-size:11.5px;}
+    .trust-grid{grid-template-columns:1fr;gap:12px;}
+    .section-title{font-size:19px;}
+    .footer-row{flex-direction:column;align-items:flex-start;gap:8px;}
+
+    .steps{max-width:none;gap:4px;}
+    .step{font-size:11px;padding-bottom:9px;}
+    .step .num{width:17px;height:17px;font-size:9.5px;margin-right:4px;}
+    .back-link{font-size:12.5px;margin-bottom:14px;}
+
+    .panel{padding:18px;border-radius:14px;}
+    .panel h2{font-size:17px;}
+    .panel .sub{font-size:12.5px;}
+    .field input, .field select, .field textarea{font-size:16px;padding:10px 12px;}
+    .row-2, .row-3{grid-template-columns:1fr;gap:12px;}
+    .continue-btn{font-size:14px;padding:13px;}
+
+    .receipt-top{padding:18px 18px 12px;}
+    .receipt-lines{padding:14px 18px;}
+    .receipt-note{margin:0 18px 18px;font-size:12px;}
+    .perforation:before{left:-13px;}
+    .perforation:after{right:-13px;}
+
+    .pay-methods{gap:10px;}
+    .pay-method{padding:12px;}
+    .send-box{padding:14px;}
+    .num-row{flex-wrap:wrap;padding:10px 12px;}
+    .num-row .num{font-size:15.5px;}
+    .steps-list{font-size:12.5px;}
+
+    .confirm-wrap h2{font-size:21px;}
+    .confirm-wrap p{font-size:13.5px;}
+    .cod-highlight{padding:16px;}
+    .cod-amount{font-size:30px;}
+    .wa-btn{width:100%;padding:13px 16px;font-size:13.5px;}
+
+    .modal-box{padding:18px;border-radius:14px;}
+    table.orders{font-size:11px;}
+    .modal-actions{flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+<!--
+  JAAS — single product storefront
+  =================================
+  Page layout below, top to bottom:
+    1. Trust ribbon + header
+    2. Product view       (#productView)   — photo, price, description, Buy Now
+    3. Trust section       (#trustSection)
+    4. Checkout view       (#checkoutView) — Step 1 Address, Step 2 Payment, Step 3 Confirmation
+    5. Footer + Store admin modal + Edit product modal
+
+  To change the PRODUCT (name, price, description, PHOTO), scroll down to
+  the script section near the bottom of this file and edit the
+  "DEFAULT_PRODUCT" object — that is the only place you need to touch
+  for product changes.
+-->
+
+<div class="ribbon"><div class="ribbon-inner">
+  <span>🔒 Secure checkout</span>
+  <span>📦 Sealed at source</span>
+  <span>💬 Real human support on WhatsApp</span>
+</div></div>
+
+<header class="site"><div class="app site-inner">
+  <div class="logo">JAA<span class="dot">S</span><span class="logo-tag">Honest goods</span></div>
+  <a class="whatsapp-pill" href="https://wa.me/8801522135352" target="_blank" rel="noopener">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.7 14.2c-.2.6-1.3 1.2-1.8 1.3-.5.1-1 .1-3.3-.7-2.8-1-4.6-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 1-2.3.2-.2.5-.3.8-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.3 0 .5-.1.2-.2.3-.3.5l-.5.5c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.6.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.4.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
+    Ask on WhatsApp
+  </a>
+</div></header>
+
+<main class="app">
+
+  <!-- ============= PRODUCT VIEW ============= -->
+  <section class="hero active" id="productView">
+    <div class="media">
+      <div class="frame">
+        <img id="productImg" src="" alt="Product photo">
+        <svg class="seal" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46" fill="#C98A2C" stroke="#8C5A1E" stroke-width="2"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#FAF6EC" stroke-width="1.5" stroke-dasharray="2,3"/>
+          <text x="50" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="10.5" font-weight="700" fill="#2A1B08">VERIFIED</text>
+          <text x="50" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="10.5" font-weight="700" fill="#2A1B08">AUTHENTIC</text>
+          <text x="50" y="72" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="7" fill="#2A1B08">JAAS &#8226; QUALITY</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="details">
+      <div class="eyebrow" id="prodEyebrow">Sundarbans, Khulna — Raw Forest Honey</div>
+      <h1 class="title" id="prodName">Sundarban Raw Forest Honey</h1>
+      <div class="rating-row">
+        <span class="stars">★★★★★</span>
+        <span class="rating-num" id="prodRating">4.8</span>
+        <span>·</span>
+        <span id="prodReviews">214 verified buyers</span>
+      </div>
+
+      <div class="price-row">
+        <span class="price-now" id="prodPrice">৳850</span>
+        <span class="price-old" id="prodOldPrice">৳1,100</span>
+        <span class="price-off" id="prodOff">-23%</span>
+      </div>
+      <div class="price-unit" id="prodUnit">750 ml sealed glass bottle · inclusive of all taxes</div>
+
+      <ul class="highlights">
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Harvested by registered Mowals from the Sundarbans forest belt</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Every batch checked by hand before it's packed</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> No heating, no added sugar, no blending</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Delivered in a tamper-evident, sealed bottle</li>
+      </ul>
+
+      <p class="desc" id="prodDesc">Raw and unprocessed, this honey is collected directly from wild hives deep in the Sundarbans mangrove forest. Every batch is tested before packing, so what reaches your table is exactly what came out of the hive — nothing added, nothing taken away.</p>
+
+      <div class="qty-row">
+        <span class="qty-label">Quantity</span>
+        <div class="qty-box">
+          <button id="qtyMinus" type="button">−</button>
+          <input type="text" id="qtyVal" value="1" readonly>
+          <button id="qtyPlus" type="button">+</button>
+        </div>
+      </div>
+
+      <button class="buy-now" id="buyNowBtn">
+        Buy Now
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <div class="pay-note">
+        <span>🛈</span>
+        <span>Pay the delivery charge in advance to confirm your order. The product price is settled with our delivery agent when it arrives — cash on delivery.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-section" id="trustSection">
+    <div class="section-title">Why customers trust JAAS</div>
+    <p class="section-sub">We keep it simple: real products, verified before they ship, and a person to talk to if anything's wrong.</p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Verified before it ships</h3>
+        <p>Every batch is checked for quality before it leaves our store — not after you complain.</p>
+      </div>
+      <div class="trust-card">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg></div>
+        <h3>Small advance, not full payment</h3>
+        <p>You only pay the delivery charge upfront. The product itself is paid for on delivery.</p>
+      </div>
+      <div class="trust-card">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4A8.5 8.5 0 0 1 4 12a8.4 8.4 0 0 1 8.4-8.5 8.5 8.5 0 0 1 8.6 8Z"/><path d="M3 21l2.3-4.6"/></svg></div>
+        <h3>A real person answers</h3>
+        <p>Questions before or after ordering go straight to our WhatsApp — no bots, no ticket queues.</p>
+      </div>
+      <div class="trust-card">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v4M8 3v4M2 11h20"/></svg></div>
+        <h3>Delivery charge by district</h3>
+        <p>৳60 inside Dhaka district, ৳130 anywhere else in Bangladesh — shown before you pay.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= CHECKOUT VIEW ============= -->
+  <section class="checkout-wrap" id="checkoutView">
+
+    <button class="back-link" id="backToStore">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+      Back to store
+    </button>
+
+    <div class="steps">
+      <div class="step current" id="stepTab1"><span class="num">1</span>Address</div>
+      <div class="step" id="stepTab2"><span class="num">2</span>Payment</div>
+      <div class="step" id="stepTab3"><span class="num">3</span>Confirmation</div>
+    </div>
+
+    <!-- STEP 1: ADDRESS -->
+    <div id="step1" class="checkout-grid">
+      <div class="panel">
+        <h2>Confirm your delivery details</h2>
+        <p class="sub">We need this to ship your order — all fields are required.</p>
+
+        <div class="field" id="f-name">
+          <label>Full name <span class="req">*</span></label>
+          <input type="text" id="in-name" placeholder="e.g. Rahim Uddin">
+          <div class="field-error">Please enter your full name.</div>
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="f-phone">
+            <label>Phone number <span class="req">*</span></label>
+            <input type="tel" id="in-phone" placeholder="01XXXXXXXXX">
+            <div class="field-error">Enter a valid Bangladeshi phone number.</div>
+          </div>
+          <div class="field" id="f-email">
+            <label>Gmail address <span class="req">*</span></label>
+            <input type="email" id="in-email" placeholder="you@gmail.com">
+            <div class="field-error">Enter a valid Gmail address.</div>
+          </div>
+        </div>
+
+        <div class="row-3">
+          <div class="field" id="f-division">
+            <label>Division <span class="req">*</span></label>
+            <select id="in-division"><option value="">Select division</option></select>
+            <div class="field-error">Select your division.</div>
+          </div>
+          <div class="field" id="f-district">
+            <label>District <span class="req">*</span></label>
+            <select id="in-district" disabled><option value="">Select district</option></select>
+            <div class="field-error">Select your district.</div>
+          </div>
+          <div class="field" id="f-thana">
+            <label>Thana / Upazila <span class="req">*</span></label>
+            <select id="in-thana" disabled><option value="">Select thana</option></select>
+            <div class="field-error">Select your thana.</div>
+          </div>
+        </div>
+
+        <div class="field" id="f-address">
+          <label>Full address <span class="req">*</span></label>
+          <textarea id="in-address" placeholder="House/road/village, landmark..."></textarea>
+          <div class="field-error">Enter your full address.</div>
+        </div>
+
+        <button class="continue-btn" id="toPaymentBtn">Continue to payment</button>
+      </div>
+
+      <div class="receipt">
+        <div class="receipt-top">
+          <h3>Order summary</h3>
+          <div class="receipt-item">
+            <img id="rcptImg" src="" alt="">
+            <div>
+              <div class="name" id="rcptName">Sundarban Raw Forest Honey</div>
+              <div class="meta" id="rcptMeta">Qty: 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="perforation"></div>
+        <div class="receipt-lines">
+          <div class="rline"><span>Product price</span><span class="val" id="rcptSubtotal">৳850</span></div>
+          <div class="rline"><span>Delivery charge</span><span class="val" id="rcptShip">৳130</span></div>
+          <div class="rline total"><span>Total</span><span class="val" id="rcptTotal">৳980</span></div>
+        </div>
+        <div class="receipt-note"><b>Pay now:</b> only the delivery charge. <b>Pay on delivery:</b> the product price, in cash.</div>
+      </div>
+    </div>
+
+    <!-- STEP 2: PAYMENT -->
+    <div id="step2" class="checkout-grid" style="display:none;">
+      <div class="panel">
+        <h2>Pay the delivery charge to confirm</h2>
+        <p class="sub">This small advance confirms your order is real and reduces failed deliveries. The product price stays cash-on-delivery.</p>
+
+        <div class="pay-methods">
+          <button type="button" class="pay-method bkash" data-method="bKash">
+            <div class="swatch">bKash</div>
+            <div class="label">Send Money</div>
+          </button>
+          <button type="button" class="pay-method nagad" data-method="Nagad">
+            <div class="swatch">Nagad</div>
+            <div class="label">Send Money</div>
+          </button>
+        </div>
+
+        <div class="send-box" id="sendBox">
+          <div class="amt">Send exactly <b id="sendAmt">৳130</b> using <span id="sendMethodLabel">bKash</span> "Send Money"</div>
+          <div class="num-row">
+            <span class="num" id="sendNumber">01951032061</span>
+            <button class="copy-btn" id="copyNumBtn" type="button">Copy</button>
+          </div>
+          <ol class="steps-list">
+            <li>Open your <span id="sendMethodLabel2">bKash</span> app and choose <b>Send Money</b>.</li>
+            <li>Enter the number above and the exact amount shown.</li>
+            <li>Complete the payment and copy the Transaction ID (TrxID) from the confirmation message.</li>
+            <li>Paste that Transaction ID below and submit your order.</li>
+          </ol>
+        </div>
+
+        <div class="field" id="f-txn">
+          <label>Transaction ID (TrxID) <span class="req">*</span></label>
+          <input type="text" id="in-txn" placeholder="e.g. 9A7B2C1D0E">
+          <div class="field-error">Enter the Transaction ID from your payment.</div>
+        </div>
+
+        <button class="continue-btn" id="submitOrderBtn">Submit order for review</button>
+      </div>
+
+      <div class="receipt">
+        <div class="receipt-top">
+          <h3>Order summary</h3>
+          <div class="receipt-item">
+            <img id="rcptImg2" src="" alt="">
+            <div>
+              <div class="name" id="rcptName2">Sundarban Raw Forest Honey</div>
+              <div class="meta" id="rcptMeta2">Qty: 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="perforation"></div>
+        <div class="receipt-lines">
+          <div class="rline"><span>Product price</span><span class="val" id="rcptSubtotal2">৳850</span></div>
+          <div class="rline"><span>Delivery charge</span><span class="val" id="rcptShip2">৳130</span></div>
+          <div class="rline total"><span>Total</span><span class="val" id="rcptTotal2">৳980</span></div>
+        </div>
+        <div class="receipt-note"><b>Deliver to:</b> <span id="rcptAddr">—</span></div>
+      </div>
+    </div>
+
+    <!-- STEP 3: CONFIRMATION -->
+    <div id="step3" style="display:none;">
+      <div class="confirm-wrap">
+        <svg class="stamp" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46" fill="#EAF3EC" stroke="#1F3D2B" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#1F3D2B" stroke-width="1.2" stroke-dasharray="2,3"/>
+          <text x="50" y="45" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="700" fill="#1F3D2B">ORDER</text>
+          <text x="50" y="60" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="700" fill="#1F3D2B">RECEIVED</text>
+        </svg>
+        <h2>We've got your order</h2>
+        <p>Your payment is under review. We confirm orders within a few hours once verified, then start preparing your delivery.</p>
+        <div class="order-id mono" id="orderIdDisplay">Order #JAAS-000000</div>
+
+        <div class="cod-highlight">
+          <div class="cod-label">Give the delivery person</div>
+          <div class="cod-amount" id="codAmount">৳850</div>
+          <div class="cod-sub">Cash on delivery — product price only, the delivery charge is already paid</div>
+        </div>
+
+        <div class="receipt confirm-summary">
+          <div class="receipt-top">
+            <h3>Order summary</h3>
+            <div class="receipt-item">
+              <img id="rcptImg3" src="" alt="">
+              <div>
+                <div class="name" id="rcptName3">Sundarban Raw Forest Honey</div>
+                <div class="meta" id="rcptMeta3">Qty: 1</div>
+              </div>
+            </div>
+          </div>
+          <div class="perforation"></div>
+          <div class="receipt-lines">
+            <div class="rline"><span>Product price (pay on delivery)</span><span class="val" id="rcptCod3">৳850</span></div>
+            <div class="rline"><span>Delivery charge (already paid)</span><span class="val" id="rcptPaid3">৳130</span></div>
+            <div class="rline total"><span>Order total</span><span class="val" id="rcptTotal3">৳980</span></div>
+            <div class="rline"><span>Payment method</span><span class="val" id="rcptMethod3">bKash</span></div>
+            <div class="rline"><span>Transaction ID</span><span class="val" id="rcptTxn3">—</span></div>
+          </div>
+        </div>
+
+        <a class="wa-btn" id="waConfirmBtn" href="https://wa.me/8801522135352" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.7 14.2c-.2.6-1.3 1.2-1.8 1.3-.5.1-1 .1-3.3-.7-2.8-1-4.6-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 1-2.3.2-.2.5-.3.8-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.3 0 .5-.1.2-.2.3-.3.5l-.5.5c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.6.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.4.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
+          Message us about your order
+        </a>
+        <button class="home-link" id="backHomeBtn">Return to store</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site"><div class="app footer-row">
+  <span>&copy; 2026 JAAS. All orders reviewed by a person before dispatch.</span>
+  <button class="admin-link" id="openAdmin">Store admin</button>
+</div></footer>
+
+<!-- Admin modal -->
+<div class="modal-veil" id="adminVeil">
+  <div class="modal-box">
+    <button class="modal-close" id="closeAdmin">&times;</button>
+    <div id="passGate">
+      <h3>Store admin</h3>
+      <div class="field passcode-box">
+        <label>Passcode</label>
+        <input type="password" id="passInput" placeholder="Enter passcode">
+      </div>
+      <button class="continue-btn" id="passSubmit" style="max-width:180px;">Enter</button>
+    </div>
+    <div id="ordersPanel" style="display:none;">
+      <h3>Orders</h3>
+      <div class="modal-actions">
+        <button id="refreshOrders">Refresh</button>
+        <button id="downloadCsv">Download CSV</button>
+        <button id="editProductBtn">Edit product</button>
+      </div>
+      <div style="overflow:auto;">
+        <table class="orders" id="ordersTable">
+          <thead><tr>
+            <th>Date</th><th>Order ID</th><th>Name</th><th>Phone</th><th>Email</th>
+            <th>Division</th><th>District</th><th>Thana</th><th>Address</th>
+            <th>Qty</th><th>Total</th><th>Method</th><th>TrxID</th><th>Status</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Product edit modal -->
+<div class="modal-veil" id="editVeil">
+  <div class="modal-box" style="max-width:480px;">
+    <button class="modal-close" id="closeEdit">&times;</button>
+    <h3>Edit product</h3>
+    <div class="field"><label>Product name</label><input id="ed-name" type="text"></div>
+    <div class="field"><label>Eyebrow / origin line</label><input id="ed-eyebrow" type="text"></div>
+    <div class="row-2">
+      <div class="field"><label>Price (৳)</label><input id="ed-price" type="number"></div>
+      <div class="field"><label>Original price (৳)</label><input id="ed-oldprice" type="number"></div>
+    </div>
+    <div class="field"><label>Unit / pack size line</label><input id="ed-unit" type="text"></div>
+    <div class="field"><label>Description</label><textarea id="ed-desc"></textarea></div>
+    <button class="continue-btn" id="saveProductBtn">Save changes</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =======================================================================
+   SCRIPT MAP — find things fast
+   - GEO DATA          : Bangladesh division/district/thana dropdown data (generated, don't hand-edit)
+   - CONFIG             : passcode, WhatsApp number, payment number, Google Sheet webhook
+   - DEFAULT_PRODUCT    : name / price / description / PHOTO — edit product here
+   - STATE              : live values while the page is open (qty, chosen payment method, etc.)
+   - PRODUCT RENDER      : draws product info onto the page
+   - SCROLL HELPER       : keeps the page scrolled to the right spot between steps
+   - VIEW SWITCH         : swaps between the product page and the checkout flow
+   - RECEIPTS            : keeps the order-summary boxes in sync with qty/district
+   - GEO DROPDOWNS       : fills Division → District → Thana selects
+   - VALIDATION          : checks the address form before moving to payment
+   - PAYMENT STEP        : bKash/Nagad selection + Transaction ID submission
+   - ADMIN               : passcode-gated order list + CSV export
+   - EDIT PRODUCT        : lets you change name/price/description from the browser (no photo option)
+   - INIT                : runs once when the page loads
+   ======================================================================= */
+/* ===================== GEO DATA ===================== */
+const BD_GEO = {"divisions":[{"id":4,"name":"Barisal"},{"id":1,"name":"Chattagram"},{"id":6,"name":"Dhaka"},{"id":3,"name":"Khulna"},{"id":8,"name":"Mymensingh"},{"id":2,"name":"Rajshahi"},{"id":7,"name":"Rangpur"},{"id":5,"name":"Sylhet"}],"districts":[{"id":28,"divisionId":3,"name":"Bagerhat"},{"id":11,"divisionId":1,"name":"Bandarban"},{"id":35,"divisionId":4,"name":"Barguna"},{"id":33,"divisionId":4,"name":"Barisal"},{"id":34,"divisionId":4,"name":"Bhola"},{"id":14,"divisionId":2,"name":"Bogura"},{"id":3,"divisionId":1,"name":"Brahmanbaria"},{"id":6,"divisionId":1,"name":"Chandpur"},{"id":18,"divisionId":2,"name":"Chapainawabganj"},{"id":8,"divisionId":1,"name":"Chattogram"},{"id":24,"divisionId":3,"name":"Chuadanga"},{"id":1,"divisionId":1,"name":"Comilla"},{"id":9,"divisionId":1,"name":"Coxsbazar"},{"id":47,"divisionId":6,"name":"Dhaka"},{"id":54,"divisionId":7,"name":"Dinajpur"},{"id":52,"divisionId":6,"name":"Faridpur"},{"id":2,"divisionId":1,"name":"Feni"},{"id":57,"divisionId":7,"name":"Gaibandha"},{"id":41,"divisionId":6,"name":"Gazipur"},{"id":51,"divisionId":6,"name":"Gopalganj"},{"id":38,"divisionId":5,"name":"Habiganj"},{"id":63,"divisionId":8,"name":"Jamalpur"},{"id":20,"divisionId":3,"name":"Jashore"},{"id":30,"divisionId":4,"name":"Jhalakathi"},{"id":29,"divisionId":3,"name":"Jhenaidah"},{"id":17,"divisionId":2,"name":"Joypurhat"},{"id":10,"divisionId":1,"name":"Khagrachhari"},{"id":27,"divisionId":3,"name":"Khulna"},{"id":45,"divisionId":6,"name":"Kishoreganj"},{"id":60,"divisionId":7,"name":"Kurigram"},{"id":25,"divisionId":3,"name":"Kushtia"},{"id":7,"divisionId":1,"name":"Lakshmipur"},{"id":55,"divisionId":7,"name":"Lalmonirhat"},{"id":50,"divisionId":6,"name":"Madaripur"},{"id":26,"divisionId":3,"name":"Magura"},{"id":46,"divisionId":6,"name":"Manikganj"},{"id":22,"divisionId":3,"name":"Meherpur"},{"id":37,"divisionId":5,"name":"Moulvibazar"},{"id":48,"divisionId":6,"name":"Munshiganj"},{"id":62,"divisionId":8,"name":"Mymensingh"},{"id":19,"divisionId":2,"name":"Naogaon"},{"id":23,"divisionId":3,"name":"Narail"},{"id":43,"divisionId":6,"name":"Narayanganj"},{"id":40,"divisionId":6,"name":"Narsingdi"},{"id":16,"divisionId":2,"name":"Natore"},{"id":64,"divisionId":8,"name":"Netrokona"},{"id":56,"divisionId":7,"name":"Nilphamari"},{"id":5,"divisionId":1,"name":"Noakhali"},{"id":13,"divisionId":2,"name":"Pabna"},{"id":53,"divisionId":7,"name":"Panchagarh"},{"id":31,"divisionId":4,"name":"Patuakhali"},{"id":32,"divisionId":4,"name":"Pirojpur"},{"id":49,"divisionId":6,"name":"Rajbari"},{"id":15,"divisionId":2,"name":"Rajshahi"},{"id":4,"divisionId":1,"name":"Rangamati"},{"id":59,"divisionId":7,"name":"Rangpur"},{"id":21,"divisionId":3,"name":"Satkhira"},{"id":42,"divisionId":6,"name":"Shariatpur"},{"id":61,"divisionId":8,"name":"Sherpur"},{"id":12,"divisionId":2,"name":"Sirajganj"},{"id":39,"divisionId":5,"name":"Sunamganj"},{"id":36,"divisionId":5,"name":"Sylhet"},{"id":44,"divisionId":6,"name":"Tangail"},{"id":58,"divisionId":7,"name":"Thakurgaon"}],"upazilas":[{"id":172,"districtId":20,"name":"Abhaynagar"},{"id":127,"districtId":14,"name":"Adamdighi"},{"id":421,"districtId":55,"name":"Aditmari"},{"id":255,"districtId":33,"name":"Agailjhara"},{"id":294,"districtId":38,"name":"Ajmiriganj"},{"id":29,"districtId":3,"name":"Akhaura"},{"id":150,"districtId":17,"name":"Akkelpur"},{"id":193,"districtId":24,"name":"Alamdanga"},{"id":391,"districtId":52,"name":"Alfadanga"},{"id":98,"districtId":11,"name":"Alikadam"},{"id":266,"districtId":35,"name":"Amtali"},{"id":72,"districtId":8,"name":"Anwara"},{"id":328,"districtId":43,"name":"Araihazar"},{"id":28,"districtId":3,"name":"Ashuganj"},{"id":179,"districtId":21,"name":"Assasuni"},{"id":118,"districtId":13,"name":"Atghoria"},{"id":485,"districtId":64,"name":"Atpara"},{"id":166,"districtId":19,"name":"Atrai"},{"id":402,"districtId":53,"name":"Atwari"},{"id":355,"districtId":45,"name":"Austagram"},{"id":251,"districtId":33,"name":"Babuganj"},{"id":161,"districtId":19,"name":"Badalgachi"},{"id":443,"districtId":59,"name":"Badargonj"},{"id":146,"districtId":16,"name":"Bagatipara"},{"id":216,"districtId":28,"name":"Bagerhat Sadar"},{"id":139,"districtId":15,"name":"Bagha"},{"id":36,"districtId":4,"name":"Baghaichari"},{"id":173,"districtId":20,"name":"Bagherpara"},{"id":142,"districtId":15,"name":"Bagmara"},{"id":293,"districtId":38,"name":"Bahubal"},{"id":354,"districtId":45,"name":"Bajitpur"},{"id":250,"districtId":33,"name":"Bakerganj"},{"id":272,"districtId":36,"name":"Balaganj"},{"id":439,"districtId":58,"name":"Baliadangi"},{"id":379,"districtId":49,"name":"Baliakandi"},{"id":269,"districtId":35,"name":"Bamna"},{"id":253,"districtId":33,"name":"Banaripara"},{"id":31,"districtId":3,"name":"Bancharampur"},{"id":329,"districtId":43,"name":"Bandar"},{"id":97,"districtId":11,"name":"Bandarban Sadar"},{"id":295,"districtId":38,"name":"Baniachong"},{"id":70,"districtId":8,"name":"Banshkhali"},{"id":145,"districtId":16,"name":"Baraigram"},{"id":267,"districtId":35,"name":"Barguna Sadar"},{"id":482,"districtId":64,"name":"Barhatta"},{"id":249,"districtId":33,"name":"Barisal Sadar"},{"id":37,"districtId":4,"name":"Barkal"},{"id":285,"districtId":37,"name":"Barlekha"},{"id":2,"districtId":1,"name":"Barura"},{"id":333,"districtId":44,"name":"Basail"},{"id":234,"districtId":31,"name":"Bauphal"},{"id":273,"districtId":36,"name":"Beanibazar"},{"id":45,"districtId":5,"name":"Begumganj"},{"id":311,"districtId":40,"name":"Belabo"},{"id":40,"districtId":4,"name":"Belaichari"},{"id":104,"districtId":12,"name":"Belkuchi"},{"id":117,"districtId":13,"name":"Bera"},{"id":268,"districtId":35,"name":"Betagi"},{"id":347,"districtId":45,"name":"Bhairab"},{"id":464,"districtId":62,"name":"Bhaluka"},{"id":246,"districtId":32,"name":"Bhandaria"},{"id":395,"districtId":52,"name":"Bhanga"},{"id":115,"districtId":13,"name":"Bhangura"},{"id":326,"districtId":42,"name":"Bhedarganj"},{"id":201,"districtId":25,"name":"Bheramara"},{"id":259,"districtId":34,"name":"Bhola Sadar"},{"id":158,"districtId":18,"name":"Bholahat"},{"id":334,"districtId":44,"name":"Bhuapur"},{"id":450,"districtId":60,"name":"Bhurungamari"},{"id":32,"districtId":3,"name":"Bijoynagar"},{"id":407,"districtId":54,"name":"Birampur"},{"id":405,"districtId":54,"name":"Birganj"},{"id":415,"districtId":54,"name":"Birol"},{"id":302,"districtId":39,"name":"Bishwambarpur"},{"id":274,"districtId":36,"name":"Bishwanath"},{"id":71,"districtId":8,"name":"Boalkhali"},{"id":392,"districtId":52,"name":"Boalmari"},{"id":409,"districtId":54,"name":"Bochaganj"},{"id":401,"districtId":53,"name":"Boda"},{"id":123,"districtId":14,"name":"Bogra Sadar"},{"id":481,"districtId":63,"name":"Bokshiganj"},{"id":260,"districtId":34,"name":"Borhan Sddin"},{"id":212,"districtId":27,"name":"Botiaghata"},{"id":24,"districtId":3,"name":"Brahmanbaria Sadar"},{"id":3,"districtId":1,"name":"Brahmanpara"},{"id":16,"districtId":1,"name":"Burichang"},{"id":81,"districtId":9,"name":"Chakaria"},{"id":73,"districtId":8,"name":"Chandanaish"},{"id":4,"districtId":1,"name":"Chandina"},{"id":55,"districtId":6,"name":"Chandpur Sadar"},{"id":155,"districtId":18,"name":"Chapainawabganj Sadar"},{"id":396,"districtId":52,"name":"Charbhadrasan"},{"id":261,"districtId":34,"name":"Charfesson"},{"id":137,"districtId":15,"name":"Charghat"},{"id":456,"districtId":60,"name":"Charrajibpur"},{"id":50,"districtId":5,"name":"Chatkhil"},{"id":119,"districtId":13,"name":"Chatmohar"},{"id":5,"districtId":1,"name":"Chauddagram"},{"id":105,"districtId":12,"name":"Chauhali"},{"id":18,"districtId":2,"name":"Chhagalnaiya"},{"id":303,"districtId":39,"name":"Chhatak"},{"id":454,"districtId":60,"name":"Chilmari"},{"id":416,"districtId":54,"name":"Chirirbandar"},{"id":223,"districtId":28,"name":"Chitalmari"},{"id":174,"districtId":20,"name":"Chougachha"},{"id":192,"districtId":24,"name":"Chuadanga Sadar"},{"id":297,"districtId":38,"name":"Chunarughat"},{"id":11,"districtId":1,"name":"Comilla Sadar"},{"id":44,"districtId":5,"name":"Companiganj"},{"id":275,"districtId":36,"name":"Companiganj"},{"id":80,"districtId":9,"name":"Coxsbazar Sadar"},{"id":23,"districtId":2,"name":"Daganbhuiyan"},{"id":213,"districtId":27,"name":"Dakop"},{"id":283,"districtId":36,"name":"Dakshinsurma"},{"id":327,"districtId":42,"name":"Damudya"},{"id":194,"districtId":24,"name":"Damurhuda"},{"id":494,"districtId":50,"name":"Dasar"},{"id":237,"districtId":31,"name":"Dashmina"},{"id":6,"districtId":1,"name":"Daudkandi"},{"id":200,"districtId":25,"name":"Daulatpur"},{"id":180,"districtId":21,"name":"Debhata"},{"id":1,"districtId":1,"name":"Debidwar"},{"id":400,"districtId":53,"name":"Debiganj"},{"id":335,"districtId":44,"name":"Delduar"},{"id":310,"districtId":39,"name":"Derai"},{"id":478,"districtId":63,"name":"Dewangonj"},{"id":163,"districtId":19,"name":"Dhamoirhat"},{"id":366,"districtId":47,"name":"Dhamrai"},{"id":344,"districtId":44,"name":"Dhanbari"},{"id":307,"districtId":39,"name":"Dharmapasha"},{"id":467,"districtId":62,"name":"Dhobaura"},{"id":130,"districtId":14,"name":"Dhunot"},{"id":89,"districtId":10,"name":"Dighinala"},{"id":208,"districtId":27,"name":"Digholia"},{"id":424,"districtId":56,"name":"Dimla"},{"id":412,"districtId":54,"name":"Dinajpur Sadar"},{"id":369,"districtId":47,"name":"Dohar"},{"id":423,"districtId":56,"name":"Domar"},{"id":262,"districtId":34,"name":"Doulatkhan"},{"id":363,"districtId":46,"name":"Doulatpur"},{"id":305,"districtId":39,"name":"Dowarabazar"},{"id":236,"districtId":31,"name":"Dumki"},{"id":211,"districtId":27,"name":"Dumuria"},{"id":126,"districtId":14,"name":"Dupchanchia"},{"id":135,"districtId":15,"name":"Durgapur"},{"id":483,"districtId":64,"name":"Durgapur"},{"id":492,"districtId":9,"name":"Eidgaon"},{"id":215,"districtId":28,"name":"Fakirhat"},{"id":59,"districtId":6,"name":"Faridgonj"},{"id":121,"districtId":13,"name":"Faridpur"},{"id":390,"districtId":52,"name":"Faridpur Sadar"},{"id":77,"districtId":8,"name":"Fatikchhari"},{"id":276,"districtId":36,"name":"Fenchuganj"},{"id":19,"districtId":2,"name":"Feni Sadar"},{"id":411,"districtId":54,"name":"Fulbari"},{"id":462,"districtId":62,"name":"Fulbaria"},{"id":21,"districtId":2,"name":"Fulgazi"},{"id":207,"districtId":27,"name":"Fultola"},{"id":131,"districtId":14,"name":"Gabtali"},{"id":471,"districtId":62,"name":"Gafargaon"},{"id":429,"districtId":57,"name":"Gaibandha Sadar"},{"id":374,"districtId":48,"name":"Gajaria"},{"id":240,"districtId":31,"name":"Galachipa"},{"id":441,"districtId":59,"name":"Gangachara"},{"id":188,"districtId":22,"name":"Gangni"},{"id":320,"districtId":41,"name":"Gazipur Sadar"},{"id":336,"districtId":44,"name":"Ghatail"},{"id":406,"districtId":54,"name":"Ghoraghat"},{"id":361,"districtId":46,"name":"Gior"},{"id":377,"districtId":49,"name":"Goalanda"},{"id":432,"districtId":57,"name":"Gobindaganj"},{"id":140,"districtId":15,"name":"Godagari"},{"id":277,"districtId":36,"name":"Golapganj"},{"id":156,"districtId":18,"name":"Gomostapur"},{"id":385,"districtId":51,"name":"Gopalganj Sadar"},{"id":337,"districtId":44,"name":"Gopalpur"},{"id":325,"districtId":42,"name":"Gosairhat"},{"id":470,"districtId":62,"name":"Gouripur"},{"id":254,"districtId":33,"name":"Gournadi"},{"id":278,"districtId":36,"name":"Gowainghat"},{"id":96,"districtId":10,"name":"Guimara"},{"id":148,"districtId":16,"name":"Gurudaspur"},{"id":298,"districtId":38,"name":"Habiganj Sadar"},{"id":52,"districtId":6,"name":"Haimchar"},{"id":57,"districtId":6,"name":"Hajiganj"},{"id":413,"districtId":54,"name":"Hakimpur"},{"id":469,"districtId":62,"name":"Haluaghat"},{"id":226,"districtId":29,"name":"Harinakundu"},{"id":438,"districtId":58,"name":"Haripur"},{"id":358,"districtId":46,"name":"Harirampur"},{"id":76,"districtId":8,"name":"Hathazari"},{"id":46,"districtId":5,"name":"Hatia"},{"id":419,"districtId":55,"name":"Hatibandha"},{"id":258,"districtId":33,"name":"Hizla"},{"id":7,"districtId":1,"name":"Homna"},{"id":349,"districtId":45,"name":"Hossainpur"},{"id":114,"districtId":13,"name":"Ishurdi"},{"id":477,"districtId":63,"name":"Islampur"},{"id":472,"districtId":62,"name":"Iswarganj"},{"id":345,"districtId":45,"name":"Itna"},{"id":304,"districtId":39,"name":"Jagannathpur"},{"id":279,"districtId":36,"name":"Jaintiapur"},{"id":425,"districtId":56,"name":"Jaldhaka"},{"id":308,"districtId":39,"name":"Jamalganj"},{"id":475,"districtId":63,"name":"Jamalpur Sadar"},{"id":177,"districtId":20,"name":"Jessore Sadar"},{"id":230,"districtId":30,"name":"Jhalakathi Sadar"},{"id":224,"districtId":29,"name":"Jhenaidah Sadar"},{"id":461,"districtId":61,"name":"Jhenaigati"},{"id":175,"districtId":20,"name":"Jhikargacha"},{"id":195,"districtId":24,"name":"Jibannagar"},{"id":154,"districtId":17,"name":"Joypurhat Sadar"},{"id":41,"districtId":4,"name":"Juraichari"},{"id":291,"districtId":37,"name":"Juri"},{"id":48,"districtId":5,"name":"Kabirhat"},{"id":53,"districtId":6,"name":"Kachua"},{"id":221,"districtId":28,"name":"Kachua"},{"id":122,"districtId":14,"name":"Kahaloo"},{"id":410,"districtId":54,"name":"Kaharol"},{"id":151,"districtId":17,"name":"Kalai"},{"id":238,"districtId":31,"name":"Kalapara"},{"id":181,"districtId":21,"name":"Kalaroa"},{"id":191,"districtId":23,"name":"Kalia"},{"id":318,"districtId":41,"name":"Kaliakair"},{"id":185,"districtId":21,"name":"Kaliganj"},{"id":227,"districtId":29,"name":"Kaliganj"},{"id":317,"districtId":41,"name":"Kaliganj"},{"id":418,"districtId":55,"name":"Kaliganj"},{"id":343,"districtId":44,"name":"Kalihati"},{"id":383,"districtId":50,"name":"Kalkini"},{"id":488,"districtId":64,"name":"Kalmakanda"},{"id":380,"districtId":49,"name":"Kalukhali"},{"id":61,"districtId":7,"name":"Kamalnagar"},{"id":106,"districtId":12,"name":"Kamarkhand"},{"id":286,"districtId":37,"name":"Kamolganj"},{"id":280,"districtId":36,"name":"Kanaighat"},{"id":319,"districtId":41,"name":"Kapasia"},{"id":34,"districtId":4,"name":"Kaptai"},{"id":353,"districtId":45,"name":"Karimgonj"},{"id":79,"districtId":8,"name":"Karnafuli"},{"id":25,"districtId":3,"name":"Kasba"},{"id":386,"districtId":51,"name":"Kashiani"},{"id":231,"districtId":30,"name":"Kathalia"},{"id":346,"districtId":45,"name":"Katiadi"},{"id":446,"districtId":59,"name":"Kaunia"},{"id":35,"districtId":4,"name":"Kawkhali"},{"id":244,"districtId":32,"name":"Kawkhali"},{"id":107,"districtId":12,"name":"Kazipur"},{"id":484,"districtId":64,"name":"Kendua"},{"id":367,"districtId":47,"name":"Keraniganj"},{"id":176,"districtId":20,"name":"Keshabpur"},{"id":88,"districtId":10,"name":"Khagrachhari Sadar"},{"id":487,"districtId":64,"name":"Khaliajuri"},{"id":414,"districtId":54,"name":"Khansama"},{"id":152,"districtId":17,"name":"Khetlal"},{"id":198,"districtId":25,"name":"Khoksa"},{"id":352,"districtId":45,"name":"Kishoreganj Sadar"},{"id":426,"districtId":56,"name":"Kishorganj"},{"id":388,"districtId":51,"name":"Kotalipara"},{"id":228,"districtId":29,"name":"Kotchandpur"},{"id":214,"districtId":27,"name":"Koyra"},{"id":287,"districtId":37,"name":"Kulaura"},{"id":351,"districtId":45,"name":"Kuliarchar"},{"id":197,"districtId":25,"name":"Kumarkhali"},{"id":448,"districtId":60,"name":"Kurigram Sadar"},{"id":196,"districtId":25,"name":"Kushtia Sadar"},{"id":82,"districtId":9,"name":"Kutubdia"},{"id":296,"districtId":38,"name":"Lakhai"},{"id":8,"districtId":1,"name":"Laksam"},{"id":60,"districtId":7,"name":"Lakshmipur Sadar"},{"id":17,"districtId":1,"name":"Lalmai"},{"id":265,"districtId":34,"name":"Lalmohan"},{"id":417,"districtId":55,"name":"Lalmonirhat Sadar"},{"id":147,"districtId":16,"name":"Lalpur"},{"id":101,"districtId":11,"name":"Lama"},{"id":38,"districtId":4,"name":"Langadu"},{"id":91,"districtId":10,"name":"Laxmichhari"},{"id":75,"districtId":8,"name":"Lohagara"},{"id":190,"districtId":23,"name":"Lohagara"},{"id":373,"districtId":48,"name":"Louhajanj"},{"id":486,"districtId":64,"name":"Madan"},{"id":480,"districtId":63,"name":"Madarganj"},{"id":381,"districtId":50,"name":"Madaripur Sadar"},{"id":299,"districtId":38,"name":"Madhabpur"},{"id":397,"districtId":52,"name":"Madhukhali"},{"id":338,"districtId":44,"name":"Madhupur"},{"id":493,"districtId":39,"name":"Madhyanagar"},{"id":204,"districtId":26,"name":"Magura Sadar"},{"id":165,"districtId":19,"name":"Manda"},{"id":93,"districtId":10,"name":"Manikchari"},{"id":360,"districtId":46,"name":"Manikganj Sadar"},{"id":171,"districtId":20,"name":"Manirampur"},{"id":247,"districtId":32,"name":"Mathbaria"},{"id":95,"districtId":10,"name":"Matiranga"},{"id":58,"districtId":6,"name":"Matlab North"},{"id":56,"districtId":6,"name":"Matlab South"},{"id":12,"districtId":1,"name":"Meghna"},{"id":256,"districtId":33,"name":"Mehendiganj"},{"id":187,"districtId":22,"name":"Meherpur Sadar"},{"id":476,"districtId":63,"name":"Melandah"},{"id":199,"districtId":25,"name":"Mirpur"},{"id":67,"districtId":8,"name":"Mirsharai"},{"id":239,"districtId":31,"name":"Mirzaganj"},{"id":339,"districtId":44,"name":"Mirzapur"},{"id":356,"districtId":45,"name":"Mithamoin"},{"id":444,"districtId":59,"name":"Mithapukur"},{"id":160,"districtId":19,"name":"Mohadevpur"},{"id":92,"districtId":10,"name":"Mohalchari"},{"id":205,"districtId":26,"name":"Mohammadpur"},{"id":84,"districtId":9,"name":"Moheshkhali"},{"id":229,"districtId":29,"name":"Moheshpur"},{"id":489,"districtId":64,"name":"Mohongonj"},{"id":136,"districtId":15,"name":"Mohonpur"},{"id":217,"districtId":28,"name":"Mollahat"},{"id":222,"districtId":28,"name":"Mongla"},{"id":312,"districtId":40,"name":"Monohardi"},{"id":13,"districtId":1,"name":"Monohargonj"},{"id":263,"districtId":34,"name":"Monpura"},{"id":220,"districtId":28,"name":"Morrelganj"},{"id":288,"districtId":37,"name":"Moulvibazar Sadar"},{"id":186,"districtId":22,"name":"Mujibnagar"},{"id":389,"districtId":51,"name":"Muksudpur"},{"id":465,"districtId":62,"name":"Muktagacha"},{"id":257,"districtId":33,"name":"Muladi"},{"id":370,"districtId":48,"name":"Munshiganj Sadar"},{"id":9,"districtId":1,"name":"Muradnagar"},{"id":466,"districtId":62,"name":"Mymensingh Sadar"},{"id":292,"districtId":38,"name":"Nabiganj"},{"id":30,"districtId":3,"name":"Nabinagar"},{"id":157,"districtId":18,"name":"Nachol"},{"id":394,"districtId":52,"name":"Nagarkanda"},{"id":340,"districtId":44,"name":"Nagarpur"},{"id":449,"districtId":60,"name":"Nageshwari"},{"id":99,"districtId":11,"name":"Naikhongchhari"},{"id":232,"districtId":30,"name":"Nalchity"},{"id":149,"districtId":16,"name":"Naldanga"},{"id":458,"districtId":61,"name":"Nalitabari"},{"id":473,"districtId":62,"name":"Nandail"},{"id":10,"districtId":1,"name":"Nangalkot"},{"id":42,"districtId":4,"name":"Naniarchar"},{"id":168,"districtId":19,"name":"Naogaon Sadar"},{"id":189,"districtId":23,"name":"Narail Sadar"},{"id":330,"districtId":43,"name":"Narayanganj Sadar"},{"id":323,"districtId":42,"name":"Naria"},{"id":313,"districtId":40,"name":"Narsingdi Sadar"},{"id":26,"districtId":3,"name":"Nasirnagar"},{"id":143,"districtId":16,"name":"Natore Sadar"},{"id":368,"districtId":47,"name":"Nawabganj"},{"id":404,"districtId":54,"name":"Nawabganj"},{"id":243,"districtId":32,"name":"Nazirpur"},{"id":248,"districtId":32,"name":"Nesarabad"},{"id":491,"districtId":64,"name":"Netrokona Sadar"},{"id":164,"districtId":19,"name":"Niamatpur"},{"id":357,"districtId":45,"name":"Nikli"},{"id":427,"districtId":56,"name":"Nilphamari Sadar"},{"id":43,"districtId":5,"name":"Noakhali Sadar"},{"id":460,"districtId":61,"name":"Nokla"},{"id":128,"districtId":14,"name":"Nondigram"},{"id":284,"districtId":36,"name":"Osmaninagar"},{"id":134,"districtId":15,"name":"Paba"},{"id":116,"districtId":13,"name":"Pabna Sadar"},{"id":206,"districtId":27,"name":"Paikgasa"},{"id":350,"districtId":45,"name":"Pakundia"},{"id":314,"districtId":40,"name":"Palash"},{"id":430,"districtId":57,"name":"Palashbari"},{"id":399,"districtId":53,"name":"Panchagarh Sadar"},{"id":90,"districtId":10,"name":"Panchari"},{"id":153,"districtId":17,"name":"Panchbibi"},{"id":378,"districtId":49,"name":"Pangsa"},{"id":408,"districtId":54,"name":"Parbatipur"},{"id":22,"districtId":2,"name":"Parshuram"},{"id":420,"districtId":55,"name":"Patgram"},{"id":270,"districtId":35,"name":"Pathorghata"},{"id":68,"districtId":8,"name":"Patiya"},{"id":162,"districtId":19,"name":"Patnitala"},{"id":235,"districtId":31,"name":"Patuakhali Sadar"},{"id":85,"districtId":9,"name":"Pekua"},{"id":451,"districtId":60,"name":"Phulbari"},{"id":434,"districtId":57,"name":"Phulchari"},{"id":468,"districtId":62,"name":"Phulpur"},{"id":447,"districtId":59,"name":"Pirgacha"},{"id":436,"districtId":58,"name":"Pirganj"},{"id":445,"districtId":59,"name":"Pirgonj"},{"id":242,"districtId":32,"name":"Pirojpur Sadar"},{"id":169,"districtId":19,"name":"Porsha"},{"id":490,"districtId":64,"name":"Purbadhala"},{"id":138,"districtId":15,"name":"Puthia"},{"id":108,"districtId":12,"name":"Raigonj"},{"id":62,"districtId":7,"name":"Raipur"},{"id":315,"districtId":40,"name":"Raipura"},{"id":233,"districtId":30,"name":"Rajapur"},{"id":452,"districtId":60,"name":"Rajarhat"},{"id":39,"districtId":4,"name":"Rajasthali"},{"id":376,"districtId":49,"name":"Rajbari Sadar"},{"id":289,"districtId":37,"name":"Rajnagar"},{"id":384,"districtId":50,"name":"Rajoir"},{"id":64,"districtId":7,"name":"Ramganj"},{"id":94,"districtId":10,"name":"Ramgarh"},{"id":63,"districtId":7,"name":"Ramgati"},{"id":219,"districtId":28,"name":"Rampal"},{"id":86,"districtId":9,"name":"Ramu"},{"id":241,"districtId":31,"name":"Rangabali"},{"id":33,"districtId":4,"name":"Rangamati Sadar"},{"id":440,"districtId":59,"name":"Rangpur Sadar"},{"id":65,"districtId":8,"name":"Rangunia"},{"id":167,"districtId":19,"name":"Raninagar"},{"id":437,"districtId":58,"name":"Ranisankail"},{"id":78,"districtId":8,"name":"Raozan"},{"id":100,"districtId":11,"name":"Rowangchhari"},{"id":455,"districtId":60,"name":"Rowmari"},{"id":102,"districtId":11,"name":"Ruma"},{"id":331,"districtId":43,"name":"Rupganj"},{"id":209,"districtId":27,"name":"Rupsha"},{"id":393,"districtId":52,"name":"Sadarpur"},{"id":14,"districtId":1,"name":"Sadarsouth"},{"id":428,"districtId":57,"name":"Sadullapur"},{"id":431,"districtId":57,"name":"Saghata"},{"id":341,"districtId":44,"name":"Sakhipur"},{"id":398,"districtId":52,"name":"Saltha"},{"id":69,"districtId":8,"name":"Sandwip"},{"id":120,"districtId":13,"name":"Santhia"},{"id":170,"districtId":19,"name":"Sapahar"},{"id":27,"districtId":3,"name":"Sarail"},{"id":218,"districtId":28,"name":"Sarankhola"},{"id":479,"districtId":63,"name":"Sarishabari"},{"id":74,"districtId":8,"name":"Satkania"},{"id":182,"districtId":21,"name":"Satkhira Sadar"},{"id":359,"districtId":46,"name":"Saturia"},{"id":365,"districtId":47,"name":"Savar"},{"id":49,"districtId":5,"name":"Senbug"},{"id":109,"districtId":12,"name":"Shahjadpur"},{"id":54,"districtId":6,"name":"Shahrasti"},{"id":225,"districtId":29,"name":"Shailkupa"},{"id":125,"districtId":14,"name":"Shajahanpur"},{"id":202,"districtId":26,"name":"Shalikha"},{"id":309,"districtId":39,"name":"Shalla"},{"id":124,"districtId":14,"name":"Shariakandi"},{"id":322,"districtId":42,"name":"Shariatpur Sadar"},{"id":178,"districtId":20,"name":"Sharsha"},{"id":132,"districtId":14,"name":"Sherpur"},{"id":457,"districtId":61,"name":"Sherpur Sadar"},{"id":362,"districtId":46,"name":"Shibaloy"},{"id":382,"districtId":50,"name":"Shibchar"},{"id":133,"districtId":14,"name":"Shibganj"},{"id":159,"districtId":18,"name":"Shibganj"},{"id":316,"districtId":40,"name":"Shibpur"},{"id":183,"districtId":21,"name":"Shyamnagar"},{"id":364,"districtId":46,"name":"Singiar"},{"id":144,"districtId":16,"name":"Singra"},{"id":372,"districtId":48,"name":"Sirajdikhan"},{"id":110,"districtId":12,"name":"Sirajganj Sadar"},{"id":66,"districtId":8,"name":"Sitakunda"},{"id":20,"districtId":2,"name":"Sonagazi"},{"id":51,"districtId":5,"name":"Sonaimori"},{"id":332,"districtId":43,"name":"Sonargaon"},{"id":129,"districtId":14,"name":"Sonatala"},{"id":301,"districtId":39,"name":"South Sunamganj"},{"id":459,"districtId":61,"name":"Sreebordi"},{"id":290,"districtId":37,"name":"Sreemangal"},{"id":371,"districtId":48,"name":"Sreenagar"},{"id":203,"districtId":26,"name":"Sreepur"},{"id":321,"districtId":41,"name":"Sreepur"},{"id":47,"districtId":5,"name":"Subarnachar"},{"id":113,"districtId":13,"name":"Sujanagar"},{"id":300,"districtId":39,"name":"Sunamganj Sadar"},{"id":433,"districtId":57,"name":"Sundarganj"},{"id":422,"districtId":56,"name":"Syedpur"},{"id":281,"districtId":36,"name":"Sylhet Sadar"},{"id":306,"districtId":39,"name":"Tahirpur"},{"id":184,"districtId":21,"name":"Tala"},{"id":271,"districtId":35,"name":"Taltali"},{"id":342,"districtId":44,"name":"Tangail Sadar"},{"id":141,"districtId":15,"name":"Tanore"},{"id":442,"districtId":59,"name":"Taragonj"},{"id":348,"districtId":45,"name":"Tarail"},{"id":474,"districtId":62,"name":"Tarakanda"},{"id":111,"districtId":12,"name":"Tarash"},{"id":264,"districtId":34,"name":"Tazumuddin"},{"id":87,"districtId":9,"name":"Teknaf"},{"id":210,"districtId":27,"name":"Terokhada"},{"id":403,"districtId":53,"name":"Tetulia"},{"id":435,"districtId":58,"name":"Thakurgaon Sadar"},{"id":103,"districtId":11,"name":"Thanchi"},{"id":15,"districtId":1,"name":"Titas"},{"id":375,"districtId":48,"name":"Tongibari"},{"id":463,"districtId":62,"name":"Trishal"},{"id":387,"districtId":51,"name":"Tungipara"},{"id":83,"districtId":9,"name":"Ukhiya"},{"id":453,"districtId":60,"name":"Ulipur"},{"id":112,"districtId":12,"name":"Ullapara"},{"id":252,"districtId":33,"name":"Wazirpur"},{"id":324,"districtId":42,"name":"Zajira"},{"id":282,"districtId":36,"name":"Zakiganj"},{"id":245,"districtId":32,"name":"Zianagar"}]};
+
+/* ===================== CONFIG ===================== */
+// If you set up a Google Apps Script Web App (see instructions provided), paste its URL here
+// so every order is also sent straight to a Google Sheet. Leave blank to skip.
+const SHEET_WEBHOOK_URL = "";
+const ADMIN_PASSCODE = "aisujihad2004";
+const WHATSAPP_NUMBER = "8801522135352";
+const PAYMENT_NUMBER = "01951032061";
+
+/* ---------------------------------------------------------------------
+   PRODUCT DETAILS — edit everything here.
+   This is the ONLY place you need to touch to change what's for sale.
+   --------------------------------------------------------------------- */
+const DEFAULT_PRODUCT = {
+  name: "Sundarban Raw Forest Honey",
+  eyebrow: "Sundarbans, Khulna — Raw Forest Honey",
+  price: 850,          // current selling price (৳)
+  oldPrice: 1100,       // original/strikethrough price (৳) — set to 0 or null to hide the discount badge
+  unit: "750 ml sealed glass bottle · inclusive of all taxes",
+  desc: "Raw and unprocessed, this honey is collected directly from wild hives deep in the Sundarbans mangrove forest. Every batch is tested before packing, so what reaches your table is exactly what came out of the hive — nothing added, nothing taken away.",
+
+  // ---- PRODUCT IMAGE ----
+  // Replace the value below with your own image. Two options:
+  //   1) A normal image URL, e.g.  image: "https://example.com/my-photo.jpg"
+  //   2) A base64 data URI if you want the image bundled inside this file.
+  // The placeholder SVG below is just a stand-in jar graphic — swap the
+  // whole "image:" value out for your real product photo.
+  image: "data:image/svg+xml;utf8," + encodeURIComponent(`
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'>
+        <defs>
+          <linearGradient id='g' x1='0' y1='0' x2='0' y2='1'>
+            <stop offset='0%' stop-color='#F3D98A'/>
+            <stop offset='100%' stop-color='#A9670F'/>
+          </linearGradient>
+        </defs>
+        <rect x='118' y='30' width='64' height='18' rx='6' fill='#3B2A14'/>
+        <rect x='128' y='18' width='44' height='16' rx='5' fill='#EDE3CE' stroke='#C9B48A' stroke-width='2'/>
+        <path d='M100 55 h100 a14 14 0 0 1 14 14 v170 a20 20 0 0 1 -20 20 h-88 a20 20 0 0 1 -20 -20 v-170 a14 14 0 0 1 14 -14 z' fill='url(#g)' stroke='#7A4E10' stroke-width='3'/>
+        <rect x='92' y='120' width='116' height='90' rx='6' fill='#FAF6EC' stroke='#C9B48A' stroke-width='2'/>
+        <text x='150' y='150' text-anchor='middle' font-family='Georgia, serif' font-size='20' font-weight='700' fill='#7A4E10'>JAAS</text>
+        <text x='150' y='172' text-anchor='middle' font-family='Georgia, serif' font-size='11' fill='#8C6A2E'>Raw Forest Honey</text>
+        <line x1='108' y1='185' x2='192' y2='185' stroke='#C9B48A' stroke-width='1.5'/>
+        <text x='150' y='200' text-anchor='middle' font-family='Georgia, serif' font-size='9' fill='#8C6A2E'>750 ML &#8226; NET WT</text>
+      </svg>
+    `)
+};
+
+/* ===================== STATE ===================== */
+let product = JSON.parse(JSON.stringify(DEFAULT_PRODUCT));
+let qty = 1;
+let selectedPayMethod = null;
+let currentOrder = null;
+
+/* ===================== UTIL ===================== */
+function money(n){ return "৳" + Number(n).toLocaleString('en-BD'); }
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function computeShipping(districtName){
+  return districtName === "Dhaka" ? 60 : 130;
+}
+function genOrderId(){
+  return "JAAS-" + Date.now().toString().slice(-8);
+}
+
+/* ===================== PRODUCT RENDER ===================== */
+function renderProduct(){
+  document.getElementById('prodEyebrow').textContent = product.eyebrow;
+  document.getElementById('prodName').textContent = product.name;
+  document.getElementById('prodPrice').textContent = money(product.price);
+  document.getElementById('prodOldPrice').textContent = product.oldPrice ? money(product.oldPrice) : "";
+  document.getElementById('prodOldPrice').style.display = product.oldPrice ? "" : "none";
+  const off = product.oldPrice ? Math.round((1 - product.price/product.oldPrice)*100) : 0;
+  document.getElementById('prodOff').textContent = "-" + off + "%";
+  document.getElementById('prodOff').style.display = off > 0 ? "" : "none";
+  document.getElementById('prodUnit').textContent = product.unit;
+  document.getElementById('prodDesc').textContent = product.desc;
+  document.getElementById('productImg').src = product.image;
+}
+
+document.getElementById('qtyMinus').onclick = ()=>{ if(qty>1){qty--; document.getElementById('qtyVal').value=qty; updateReceipts();} };
+document.getElementById('qtyPlus').onclick = ()=>{ qty++; document.getElementById('qtyVal').value=qty; updateReceipts(); };
+
+
+/* ===================== SCROLL HELPER ===================== */
+function scrollToEl(el){
+  if(!el) return;
+  const ribbon = document.querySelector('.ribbon');
+  const head = document.querySelector('header.site');
+  const offset = (ribbon ? ribbon.offsetHeight : 0) + (head ? head.offsetHeight : 0) + 14;
+  const rect = el.getBoundingClientRect();
+  const targetY = window.scrollY + rect.top - offset;
+  window.scrollTo({ top: Math.max(targetY, 0), behavior: 'smooth' });
+}
+
+/* ===================== VIEW SWITCH ===================== */
+function showProductView(){
+  document.getElementById('productView').classList.add('active');
+  document.getElementById('trustSection').style.display = '';
+  document.getElementById('checkoutView').classList.remove('active');
+  scrollToEl(document.getElementById('productView'));
+}
+function showCheckoutView(){
+  document.getElementById('productView').classList.remove('active');
+  document.getElementById('trustSection').style.display = 'none';
+  document.getElementById('checkoutView').classList.add('active');
+  goToStep(1);
+  scrollToEl(document.getElementById('checkoutView'));
+}
+document.getElementById('buyNowBtn').onclick = showCheckoutView;
+document.getElementById('backToStore').onclick = showProductView;
+document.getElementById('backHomeBtn').onclick = showProductView;
+
+function goToStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('step'+i).style.display = (i===n ? '' : 'none');
+    const tab = document.getElementById('stepTab'+i);
+    tab.classList.remove('current','done');
+    if(i<n) tab.classList.add('done');
+    if(i===n) tab.classList.add('current');
+  });
+  // Keep the user near the step tabs / new panel instead of jumping to the page top
+  scrollToEl(document.querySelector('.steps'));
+}
+
+/* ===================== RECEIPTS ===================== */
+function updateReceipts(){
+  const subtotal = product.price * qty;
+  const districtSel = document.getElementById('in-district');
+  const districtName = districtSel.selectedOptions[0] ? districtSel.selectedOptions[0].dataset.name : null;
+  const shipping = districtName ? computeShipping(districtName) : 130;
+  const total = subtotal + shipping;
+
+  [1,2].forEach(step=>{
+    const suf = step===1 ? '' : '2';
+    const imgEl = document.getElementById('rcptImg'+suf);
+    if(imgEl) imgEl.src = product.image;
+    const nameEl = document.getElementById('rcptName'+suf);
+    if(nameEl) nameEl.textContent = product.name;
+    const metaEl = document.getElementById('rcptMeta'+suf);
+    if(metaEl) metaEl.textContent = 'Qty: ' + qty;
+    const subEl = document.getElementById('rcptSubtotal'+suf);
+    if(subEl) subEl.textContent = money(subtotal);
+    const shipEl = document.getElementById('rcptShip'+suf);
+    if(shipEl) shipEl.textContent = money(shipping);
+    const totEl = document.getElementById('rcptTotal'+suf);
+    if(totEl) totEl.textContent = money(total);
+  });
+
+  document.getElementById('sendAmt').textContent = money(shipping);
+  return {subtotal, shipping, total, districtName};
+}
+
+/* ===================== GEO DROPDOWNS ===================== */
+function populateDivisions(){
+  const sel = document.getElementById('in-division');
+  BD_GEO.divisions.forEach(d=>{
+    const o = document.createElement('option');
+    o.value = d.id; o.textContent = d.name;
+    sel.appendChild(o);
+  });
+}
+function populateDistricts(divisionId){
+  const sel = document.getElementById('in-district');
+  sel.innerHTML = '<option value="">Select district</option>';
+  const list = BD_GEO.districts.filter(x=>x.divisionId === Number(divisionId));
+  list.forEach(d=>{
+    const o = document.createElement('option');
+    o.value = d.id; o.textContent = d.name; o.dataset.name = d.name;
+    sel.appendChild(o);
+  });
+  sel.disabled = list.length===0;
+}
+function populateThanas(districtId){
+  const sel = document.getElementById('in-thana');
+  sel.innerHTML = '<option value="">Select thana</option>';
+  const list = BD_GEO.upazilas.filter(x=>x.districtId === Number(districtId));
+  list.forEach(u=>{
+    const o = document.createElement('option');
+    o.value = u.id; o.textContent = u.name; o.dataset.name = u.name;
+    sel.appendChild(o);
+  });
+  sel.disabled = list.length===0;
+}
+document.getElementById('in-division').onchange = (e)=>{
+  populateDistricts(e.target.value);
+  document.getElementById('in-thana').innerHTML = '<option value="">Select thana</option>';
+  document.getElementById('in-thana').disabled = true;
+  updateReceipts();
+};
+document.getElementById('in-district').onchange = (e)=>{
+  populateThanas(e.target.value);
+  updateReceipts();
+};
+document.getElementById('in-thana').onchange = updateReceipts;
+
+/* ===================== VALIDATION ===================== */
+function setInvalid(fieldId, invalid){
+  document.getElementById(fieldId).classList.toggle('invalid', invalid);
+}
+function validateStep1(){
+  let ok = true;
+  const name = document.getElementById('in-name').value.trim();
+  const phone = document.getElementById('in-phone').value.trim();
+  const email = document.getElementById('in-email').value.trim();
+  const division = document.getElementById('in-division').value;
+  const district = document.getElementById('in-district').value;
+  const thana = document.getElementById('in-thana').value;
+  const address = document.getElementById('in-address').value.trim();
+
+  setInvalid('f-name', !name); if(!name) ok=false;
+  const phoneOk = /^01[3-9]\d{8}$/.test(phone);
+  setInvalid('f-phone', !phoneOk); if(!phoneOk) ok=false;
+  const emailOk = /^[^\s@]+@gmail\.com$/i.test(email);
+  setInvalid('f-email', !emailOk); if(!emailOk) ok=false;
+  setInvalid('f-division', !division); if(!division) ok=false;
+  setInvalid('f-district', !district); if(!district) ok=false;
+  setInvalid('f-thana', !thana); if(!thana) ok=false;
+  setInvalid('f-address', !address); if(!address) ok=false;
+
+  return ok;
+}
+document.getElementById('toPaymentBtn').onclick = ()=>{
+  if(!validateStep1()) { toast('Please complete all required fields'); return; }
+  const r = updateReceipts();
+  const divisionName = document.getElementById('in-division').selectedOptions[0].textContent;
+  const districtName = document.getElementById('in-district').selectedOptions[0].textContent;
+  const thanaName = document.getElementById('in-thana').selectedOptions[0].textContent;
+  const address = document.getElementById('in-address').value.trim();
+  document.getElementById('rcptAddr').textContent = `${address}, ${thanaName}, ${districtName}, ${divisionName}`;
+  goToStep(2);
+};
+
+/* ===================== PAYMENT STEP ===================== */
+document.querySelectorAll('.pay-method').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.pay-method').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedPayMethod = btn.dataset.method;
+    document.getElementById('sendBox').classList.add('show');
+    document.getElementById('sendMethodLabel').textContent = selectedPayMethod;
+    document.getElementById('sendMethodLabel2').textContent = selectedPayMethod;
+    document.getElementById('sendNumber').textContent = PAYMENT_NUMBER;
+  };
+});
+function copyText(text){
+  return new Promise((resolve, reject)=>{
+    if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(resolve).catch(()=> fallbackCopy(text, resolve, reject));
+    } else {
+      fallbackCopy(text, resolve, reject);
+    }
+  });
+}
+function fallbackCopy(text, resolve, reject){
+  try{
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.left = '-1000px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    ok ? resolve() : reject(new Error('execCommand copy failed'));
+  }catch(err){
+    reject(err);
+  }
+}
+document.getElementById('copyNumBtn').onclick = ()=>{
+  const b = document.getElementById('copyNumBtn');
+  copyText(PAYMENT_NUMBER).then(()=>{
+    b.textContent = 'Copied'; b.classList.add('copied');
+    setTimeout(()=>{ b.textContent='Copy'; b.classList.remove('copied'); }, 1600);
+  }).catch(()=>{
+    toast('Could not copy — number is ' + PAYMENT_NUMBER);
+  });
+};
+
+async function submitOrder(){
+  const txn = document.getElementById('in-txn').value.trim();
+  setInvalid('f-txn', !txn);
+  if(!selectedPayMethod){ toast('Choose bKash or Nagad'); return; }
+  if(!txn){ toast('Enter your Transaction ID'); return; }
+
+  const r = updateReceipts();
+  const divisionName = document.getElementById('in-division').selectedOptions[0].textContent;
+  const districtName = document.getElementById('in-district').selectedOptions[0].textContent;
+  const thanaName = document.getElementById('in-thana').selectedOptions[0].textContent;
+
+  const order = {
+    orderId: genOrderId(),
+    date: new Date().toISOString(),
+    name: document.getElementById('in-name').value.trim(),
+    phone: document.getElementById('in-phone').value.trim(),
+    email: document.getElementById('in-email').value.trim(),
+    division: divisionName,
+    district: districtName,
+    thana: thanaName,
+    address: document.getElementById('in-address').value.trim(),
+    product: product.name,
+    qty: qty,
+    unitPrice: product.price,
+    subtotal: r.subtotal,
+    shipping: r.shipping,
+    total: r.total,
+    paymentMethod: selectedPayMethod,
+    transactionId: txn,
+    status: "Pending review"
+  };
+  currentOrder = order;
+
+  try{
+    await window.storage.set('orders:' + order.orderId, JSON.stringify(order), true);
+  }catch(err){ console.error('storage save failed', err); }
+
+  if(SHEET_WEBHOOK_URL){
+    try{
+      await fetch(SHEET_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {'Content-Type':'text/plain'},
+        body: JSON.stringify(order)
+      });
+    }catch(err){ console.error('sheet webhook failed', err); }
+  }
+
+  document.getElementById('orderIdDisplay').textContent = 'Order #' + order.orderId;
+  document.getElementById('codAmount').textContent = money(order.subtotal);
+  document.getElementById('rcptImg3').src = product.image;
+  document.getElementById('rcptName3').textContent = product.name;
+  document.getElementById('rcptMeta3').textContent = 'Qty: ' + qty;
+  document.getElementById('rcptCod3').textContent = money(order.subtotal);
+  document.getElementById('rcptTotal3').textContent = money(order.total);
+  document.getElementById('rcptPaid3').textContent = money(order.shipping);
+  document.getElementById('rcptMethod3').textContent = order.paymentMethod;
+  document.getElementById('rcptTxn3').textContent = order.transactionId;
+  document.getElementById('waConfirmBtn').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi JAAS, checking on my order ' + order.orderId)}`;
+
+  goToStep(3);
+}
+document.getElementById('submitOrderBtn').onclick = submitOrder;
+
+/* ===================== ADMIN ===================== */
+document.getElementById('openAdmin').onclick = ()=>{
+  document.getElementById('adminVeil').classList.add('show');
+  document.getElementById('passGate').style.display = '';
+  document.getElementById('ordersPanel').style.display = 'none';
+  document.getElementById('passInput').value = '';
+};
+document.getElementById('closeAdmin').onclick = ()=> document.getElementById('adminVeil').classList.remove('show');
+document.getElementById('passSubmit').onclick = ()=>{
+  if(document.getElementById('passInput').value === ADMIN_PASSCODE){
+    document.getElementById('passGate').style.display = 'none';
+    document.getElementById('ordersPanel').style.display = '';
+    loadOrders();
+  } else {
+    toast('Wrong passcode');
+  }
+};
+
+let lastOrders = [];
+async function loadOrders(){
+  try{
+    const list = await window.storage.list('orders:', true);
+    const rows = [];
+    if(list && list.keys){
+      for(const k of list.keys){
+        try{
+          const r = await window.storage.get(k, true);
+          if(r) rows.push(JSON.parse(r.value));
+        }catch(e){}
+      }
+    }
+    rows.sort((a,b)=> new Date(b.date) - new Date(a.date));
+    lastOrders = rows;
+    renderOrdersTable(rows);
+  }catch(err){
+    console.error(err);
+    toast('Could not load orders');
+  }
+}
+function renderOrdersTable(rows){
+  const tbody = document.querySelector('#ordersTable tbody');
+  tbody.innerHTML = '';
+  rows.forEach(o=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${new Date(o.date).toLocaleString()}</td><td>${o.orderId}</td><td>${o.name}</td>
+      <td>${o.phone}</td><td>${o.email}</td><td>${o.division}</td><td>${o.district}</td><td>${o.thana}</td>
+      <td>${o.address}</td><td>${o.qty}</td><td>${money(o.total)}</td><td>${o.paymentMethod}</td>
+      <td>${o.transactionId}</td><td>${o.status}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+document.getElementById('refreshOrders').onclick = loadOrders;
+document.getElementById('downloadCsv').onclick = ()=>{
+  if(!lastOrders.length){ toast('No orders yet'); return; }
+  const headers = ['Date','OrderID','Name','Phone','Email','Division','District','Thana','Address','Qty','Total','PaymentMethod','TransactionID','Status'];
+  const csvRows = [headers.join(',')];
+  lastOrders.forEach(o=>{
+    const vals = [o.date,o.orderId,o.name,o.phone,o.email,o.division,o.district,o.thana,o.address,o.qty,o.total,o.paymentMethod,o.transactionId,o.status]
+      .map(v=> '"' + String(v).replace(/"/g,'""') + '"');
+    csvRows.push(vals.join(','));
+  });
+  const blob = new Blob([csvRows.join('\n')], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'jaas-orders.csv';
+  a.click();
+};
+
+/* ===================== EDIT PRODUCT ===================== */
+document.getElementById('editProductBtn').onclick = ()=>{
+  document.getElementById('adminVeil').classList.remove('show');
+  document.getElementById('ed-name').value = product.name;
+  document.getElementById('ed-eyebrow').value = product.eyebrow;
+  document.getElementById('ed-price').value = product.price;
+  document.getElementById('ed-oldprice').value = product.oldPrice || '';
+  document.getElementById('ed-unit').value = product.unit;
+  document.getElementById('ed-desc').value = product.desc;
+  document.getElementById('editVeil').classList.add('show');
+};
+document.getElementById('closeEdit').onclick = ()=> document.getElementById('editVeil').classList.remove('show');
+document.getElementById('saveProductBtn').onclick = async ()=>{
+  product.name = document.getElementById('ed-name').value.trim() || product.name;
+  product.eyebrow = document.getElementById('ed-eyebrow').value.trim();
+  product.price = Number(document.getElementById('ed-price').value) || product.price;
+  product.oldPrice = Number(document.getElementById('ed-oldprice').value) || null;
+  product.unit = document.getElementById('ed-unit').value.trim();
+  product.desc = document.getElementById('ed-desc').value.trim();
+  try{ await window.storage.set('jaas-product', JSON.stringify(product), false); }catch(e){ console.error(e); }
+  renderProduct();
+  updateReceipts();
+  document.getElementById('editVeil').classList.remove('show');
+  toast('Product updated');
+};
+
+/* ===================== INIT ===================== */
+async function init(){
+  populateDivisions();
+  try{
+    const saved = await window.storage.get('jaas-product', false);
+    if(saved && saved.value){
+      product = JSON.parse(saved.value);
+    }
+  }catch(err){ /* no saved product yet */ }
+  renderProduct();
+  updateReceipts();
+}
+init();
+</script>
+</body>
+</html>
